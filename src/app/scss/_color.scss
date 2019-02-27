@@ -1,0 +1,15 @@
+$text-color: #333;
+$quiet-color: #666;
+$loud-color: #000;
+
+$link-color: #d54aaf;
+$link-hover-color: saturate($link-color, 20%);
+$link-vidited-color: purple;
+
+$placeholder-color: #ccc;
+
+$focus-color: rgb(60, 180, 250);
+$focus-color-soft: rgba(60, 180, 250, 0.31); 
+
+$label-color: #777;
+$button_disabled_color: #ccc;

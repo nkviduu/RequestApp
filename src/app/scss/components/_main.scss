@@ -1,0 +1,49 @@
+.app-main-wrapper {
+  justify-content: center;
+  
+  @media #{$full-size} {
+    width: $full-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.app-main {
+  width: 100%;  
+}
+
+nav a {
+  font-size: rem(16);
+  color: #888;
+  text-decoration: underline;
+  margin: 0 8px;
+
+  transition: all 300ms;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.link--active {
+  user-select: none;
+  text-decoration: none;
+  color: #aaa;
+  letter-spacing: 2px;
+}
+
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 18px 0;
+  color: #0085ff;
+}
+
+
+.request {
+  font-size: rem(16);
+  border-radius: 3px;
+  padding-bottom: 100px; 
+}
+
+

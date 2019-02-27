@@ -1,0 +1,120 @@
+/* You can add global styles to this file, and also import other style files */
+// @import '../node_modules/compass-mixins/lib/compass/';
+// @include global-reset;
+@import 'app/scss/color';
+@import 'app/scss/typography';
+@import 'app/scss/utils';
+@import 'app/scss/media';
+@import 'app/scss/focus';
+@import 'app/scss/components/panel-collapsable';
+@import 'app/scss/components/open-requests';
+@import 'app/scss/components/container';
+@import 'app/scss/components/button';
+@import "app/scss/components/main";
+
+* { box-sizing: border-box }
+
+.h1, .h2, .h3 {
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+  line-height: 1.1;
+  margin: 1em 0 0.5em;
+  font-weight: 400;
+}
+
+.h1 {
+  font-size: 250%;
+}
+
+.h2 {
+  font-size: 160%;
+}
+
+.h3 {
+  font-size: 130%;
+}
+
+.fixed,
+.code {
+  font-family: $fixed-font-family;
+  font-weight: $fixed-font-weight;
+  font-size: $fixed-font-size;
+}
+
+.quiet { color: $quiet-color; }
+.loud { color: $loud-color; }
+
+.bold { 
+  font-weight: 700; 
+  @extend .loud; 
+}
+
+a {
+  color: #0374bb;
+  text-decoration: none;
+}
+
+p,
+li,
+.description {
+  // @extend .quiet;
+  color: #555;
+}
+
+body {
+  color: $text-color;
+  font-size: $base-font-size;
+  font-family: $base-font-family;
+  font-weight: $base-font-weight;
+  line-height: 1.6;
+}
+
+html {
+  // font: 16px/1 Arial;
+  font-family: 'Roboto', Arial;
+  scroll-behavior: smooth;
+}
+
+/**
+ * overrides
+ */
+
+.ui-calendar input {
+  border: none;
+  border-bottom: solid 1px #222;
+  border-radius: 0px;
+  width: 86px;
+}
+
+/**
+ * components
+ */
+
+$sampleBackgroundColor: #999;
+.sample {
+  border: solid 1px $sampleBackgroundColor;
+}
+
+.sample-label {
+  margin: 0;
+  border: solid 1px $sampleBackgroundColor;
+  border-bottom-color: white;
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
+  transform: translateY(1px);
+
+  &:nth-child(2) {
+    border-left: none;
+  }
+}
+
+.code {
+  border-top: solid 1px $sampleBackgroundColor;
+  white-space: pre;
+}
+
+.sample-content,
+.code {
+  padding: 1rem 1rem 0 4rem;
+}
