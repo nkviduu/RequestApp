@@ -65,7 +65,5 @@ export class FormActionsComponent implements OnInit, OnDestroy {
 }
 
 function pick(propertyName) {
-  return function(obj) {
-    return obj[propertyName] && obj[propertyName].replace(/:$/, '');
-  };
+  return (obj) => obj[propertyName] && obj[propertyName].replace(/:$/, '');
 }

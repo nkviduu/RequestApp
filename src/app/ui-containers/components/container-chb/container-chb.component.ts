@@ -81,12 +81,12 @@ export class ContainerChbComponent extends ContainerComponent
           }
         }, of({}))
       .subscribe( value => {
-        const new_is_selected = this.isChildSelected() > 0;
-        if (new_is_selected !== this.value.selected) {
+        const newIsSelected = this.isChildSelected() > 0;
+        if (newIsSelected !== this.value.selected) {
           this.value.valid  = this.isChildSelected() > 0;
           this.value.selected = this.value.valid;
           // notify parent
-          this.checked$.emit({ selected: new_is_selected });
+          this.checked$.emit({ selected: newIsSelected });
           this.notifyChange();
         }
       });

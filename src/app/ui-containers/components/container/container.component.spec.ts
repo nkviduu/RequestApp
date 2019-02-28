@@ -20,7 +20,7 @@ describe('ContainerComponent', () => {
 
   beforeEach(async(() => {
     const contentServiceStub = {
-      updateItem: function(path, value) {}
+      updateItem(path, value) {}
     };
 
     TestBed.configureTestingModule({

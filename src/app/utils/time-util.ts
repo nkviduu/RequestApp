@@ -44,8 +44,8 @@ function minToTime(min) {
 
   let hours = Math.floor(min / 60);
   const minutes = min % 60;
-  let minutes_str;
-  minutes_str = (minutes < 10 ? '0' : '') + minutes; // adding leading zero
+  let minutesStr;
+  minutesStr = (minutes < 10 ? '0' : '') + minutes; // adding leading zero
 
   const ampm = hours % 24 < 12 ? 'AM' : 'PM';
   hours = hours < 13
@@ -53,7 +53,7 @@ function minToTime(min) {
     : hours % 12;
 
   // if hours is 0 change it to 12
-  return (hours || 12) + ':' + minutes_str + ' ' + ampm;
+  return (hours || 12) + ':' + minutesStr + ' ' + ampm;
 }
 
 function formatTime(ts) {
@@ -85,11 +85,11 @@ function duration(min) {
   const hours = Math.floor(min / 60);
   const minutes = min % 60;
 
-  const hours_str = hours
+  const hoursStr = hours
     ? hours + (hours > 1 ? ' hrs ' : ' hr ')
     : ' ';
 
-  const minutes_str = minutes ? minutes + ' mins' : '';
+  const minutesStr = minutes ? minutes + ' mins' : '';
 
-  return (hours_str + minutes_str).replace(/^ | $/, '');
+  return (hoursStr + minutesStr).replace(/^ | $/, '');
 }

@@ -2,8 +2,10 @@
 import { Directive, HostListener, Input, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({ selector: '[rfAnimateOnClick]' })
-/** on click apply animate class
- *  and remove it once animation is complete */
+/**
+ * on click apply animate class
+ * and remove it once animation is complete
+ */
 export class AnimateOnClickDirective {
   // tslint:disable-next-line
   @Input('rfAnimateOnClick') animateClass = 'animate';

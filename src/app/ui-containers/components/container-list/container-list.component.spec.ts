@@ -8,7 +8,7 @@ import { getContainerModuleConfig, getElementFactory } from '../Testing/moduleUt
 describe('ContainerListComponent', () => {
   let component: ContainerListComponent;
   let fixture: ComponentFixture<ContainerListComponent>;
-  let el: Function;
+  let el: any;
 
   const moduleConfig = getContainerModuleConfig({
     declarations: [ ContainerListComponent ]
@@ -128,7 +128,7 @@ describe('ContainerListComponent', () => {
     expect(component.value.text).toBe('');
   }));
 
-it ('should updated internal state correctly after applyNewValue', async(() => {
+  it('should updated internal state correctly after applyNewValue', async(() => {
     const list = 'One|Two|Other';
     const notInTheList = 'Not in the list';
     component.list = list;

@@ -33,7 +33,7 @@ export class ContainerComponent {
 
   // generate unique id for checkbox and label "for" attribute
   // it may be preferrable to use uuid utitly function for getting unique id
-  dom_id = 'rid_' + this.idService.getId() + '_';
+  domId = 'rid_' + this.idService.getId() + '_';
 
   @ContentChildren(ContainerComponent) children: QueryList<ContainerComponent>;
 

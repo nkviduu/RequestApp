@@ -10,12 +10,12 @@
           type="checkbox" 
           (change)="onchange(i)" 
           [checked]="i === selectedItemIndex"
-          [id]="dom_id + i">
+          [id]="domId + i">
         <div>
           <label 
             class="label"
             [class.selected]="i === selectedItemIndex"
-            [for]="dom_id + i"
+            [for]="domId + i"
           >{{ item }}</label>
           <input 
             *ngIf="item === editableValue && i === selectedItemIndex" 

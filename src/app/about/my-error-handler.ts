@@ -2,7 +2,7 @@ import { ErrorHandler } from '@angular/core';
 
 export default class MyErrorHandler extends ErrorHandler {
 
-  constructor () {
+  constructor() {
     super();
   }
   handleError(error) {

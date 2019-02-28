@@ -8,7 +8,7 @@ import { getContainerModuleConfig, getElementFactory } from '../Testing/moduleUt
 describe('ContainerTimeComponent', () => {
   let component: ContainerTimeComponent;
   let fixture: ComponentFixture<ContainerTimeComponent>;
-  let el: Function;
+  let el: any;
 
   const moduleConfig = getContainerModuleConfig({
     declarations: [

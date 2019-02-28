@@ -85,7 +85,7 @@ export class VideoDemoComponent {
    * Play video on mouse over first time as controls may not be
    * visible at the bottom of screen
    * Keeping mouse over may prove to be tricky to stop video
-  */
+   */
   playVideo() {
     if (!this.started) {
       this.videoPlayer.nativeElement.play();

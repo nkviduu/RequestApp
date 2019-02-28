@@ -1,8 +1,10 @@
 import { Directive, HostListener, HostBinding} from '@angular/core';
 
 @Directive({ selector: '[rfTabNavigation]' })
-/** detects tab event and adds keyboard-interaction class to element
- * and removes it on mousemove event */
+/**
+ * detects tab event and adds keyboard-interaction class to element
+ * and removes it on mousemove event
+ */
 export class TabNavigationDirective {
 
   @HostBinding('class.keyboard-interaction') isTabbed = false;

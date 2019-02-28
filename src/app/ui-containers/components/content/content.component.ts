@@ -173,7 +173,7 @@ export function processDroppedImageFiles(files, cb) {
   });
 }
 
-export function getClipboardImage (clipboardData, cb) {
+export function getClipboardImage(clipboardData, cb) {
   const file = getClipboardImageFile(clipboardData);
   if (file) {
     readFile(file).then(cb);
@@ -184,7 +184,7 @@ export function getClipboardImage (clipboardData, cb) {
 
 function getClipboardImageFile(clipboardData) {
   let file;
-  Array.prototype.forEach.call(clipboardData.types, function (type, i) {
+  Array.prototype.forEach.call(clipboardData.types, (type, i) => {
     const item = clipboardData.items[i];
     if (/image/.test(type) || /image/.test(item.type)) {
       file = item.getAsFile();
@@ -201,6 +201,7 @@ function readFile(file: File): Promise<{
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = evt => {
+      // tslint:disable-next-line
       resolve({ dataURL: evt.target['result'], file, name: file.name });
     };
     // reader.onerror = (error) => {
@@ -212,9 +213,9 @@ function readFile(file: File): Promise<{
 
 function handleAndScaleImageFiles(files, maxSize = 1200, cb) {
   Array.prototype.forEach.call(files, (file) => {
-    const img = new Image;
+    const img = new Image();
     img.src = URL.createObjectURL(file);
-    img.onload = function() {
+    img.onload = () => {
       const base64String = getImageDataUrl(img, maxSize);
       cb(base64String);
     };

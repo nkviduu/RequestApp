@@ -31,8 +31,8 @@ export class UpComponent implements OnInit {
   ngOnInit() {
     let prevRatio = 0;
     if ('IntersectionObserver' in window) {
-      const observerObj = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(function(entry) {
+      const observerObj = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
           const { isIntersecting, intersectionRatio } = entry;
 
           entry
@@ -48,7 +48,7 @@ export class UpComponent implements OnInit {
         threshold: [.95, 1],
         rootMargin: '-125px 0px 0px 0px',
       });
-    observerObj.observe(this.el.nativeElement);
+      observerObj.observe(this.el.nativeElement);
     }
   }
 

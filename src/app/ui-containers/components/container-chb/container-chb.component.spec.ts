@@ -1,3 +1,4 @@
+// tslint:disable:no-string-literal
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
@@ -15,11 +16,11 @@ describe('ContainerChbComponent', () => {
   let component: ContainerChbComponent;
   let fixture: ComponentFixture<ContainerChbComponent>;
 
-  let elByCss: Function;
+  let elByCss: any;
 
   beforeEach(async(() => {
     const contentServiceStub = {
-      updateItem: function(path, value) {}
+      updateItem(path, value) {}
     };
 
     TestBed.configureTestingModule(
@@ -40,20 +41,20 @@ describe('ContainerChbComponent', () => {
   });
 
   it('should toggle select on clicking on label', () => {
-    const label_checkbox = elByCss('input[type=checkbox');
-    let ischecked = !!label_checkbox.nativeElement.checked;
+    const labelCheckbox = elByCss('input[type=checkbox');
+    let ischecked = !!labelCheckbox.nativeElement.checked;
 
     expect(component.isSelected).toBeFalsy();
     expect(ischecked).toBeFalsy();
 
-    label_checkbox.triggerEventHandler('change', {
+    labelCheckbox.triggerEventHandler('change', {
       target: { checked: !ischecked }
     });
     fixture.detectChanges();
 
     expect(component.isSelected).toBeTruthy();
 
-    ischecked = !!label_checkbox.nativeElement.checked;
+    ischecked = !!labelCheckbox.nativeElement.checked;
     expect(ischecked).toBeTruthy();
   });
 
@@ -109,7 +110,7 @@ describe('ContainerChbComponent mock hierarchy', () => {
 
   let component: MockContainerHierachyComponent;
   let fixture: ComponentFixture<MockContainerHierachyComponent>;
-  let elByCss: Function;
+  let elByCss: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule(getContainerModuleConfig({

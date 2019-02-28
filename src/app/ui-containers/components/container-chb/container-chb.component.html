@@ -7,14 +7,14 @@
     [checked]="value?.selected"
     (change)="onselect($event.target.checked)" 
     type="checkbox"
-    [id]="dom_id"
+    [id]="domId"
   >
   <div>
     <label 
       *ngIf="!isRadioSelectContainer()"
       [class.container-select__label]="!isRadioSelectContainer() && !value?.isrequired"
       [class.selected]="value?.selected"
-      [for]="dom_id"
+      [for]="domId"
     >
       {{ title }} <small *ngIf="subtitle">{{ subtitle }}</small>
     </label>

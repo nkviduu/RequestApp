@@ -69,11 +69,11 @@ describe('ContentComponent', () => {
       // test if valid valid image can be created from attachement src
       const image = new Image();
       image.src = imageUrl;
-      image.onload = function() {
+      image.onload = () => {
         expect(image.width).toBeGreaterThan(0);
         done();
       };
-      image.onerror = function() {
+      image.onerror = () => {
         throw new Error('Failed to create image from attached file');
       };
     };
@@ -98,11 +98,11 @@ describe('ContentComponent', () => {
       // test creation of valid image from attachement src
       const image = new Image();
       image.src = imageUrl;
-      image.onload = function() {
+      image.onload = () => {
         expect(image.width).toBeGreaterThan(0);
         done();
       };
-      image.onerror = function() {
+      image.onerror = () => {
         throw new Error('Failed to create image from attached file');
       };
     };
@@ -121,11 +121,11 @@ describe('ContentComponent', () => {
       // test creation of valid image from attachement src
       const image = new Image();
       image.src = imageUrl;
-      image.onload = function() {
+      image.onload = () => {
         expect(image.width).toBeGreaterThan(0);
         done();
       };
-      image.onerror = function() {
+      image.onerror = () => {
         throw new Error('Failed to create image from attached file');
       };
     };
@@ -134,14 +134,14 @@ describe('ContentComponent', () => {
 
   it(`should debounce text content entries`, fakeAsync(() => {
     const textAreaElement: HTMLTextAreaElement = fixture.debugElement.query(By.css('textArea')).nativeElement;
-    const new_value = 'new value';
-    textAreaElement.value = new_value;
+    const newValue = 'new value';
+    textAreaElement.value = newValue;
     textAreaElement.dispatchEvent(new Event('input'));
     component.onUpdate = jasmine.createSpy('onUpdate');
     expect(component.onUpdate).not.toHaveBeenCalled();
     tick(TEXT_CONTENT_DEBOUNCE_TIME);
     expect(component.onUpdate).toHaveBeenCalled();
-    expect(component.onUpdate).toHaveBeenCalledWith({ content: new_value, attachements: [] });
+    expect(component.onUpdate).toHaveBeenCalledWith({ content: newValue, attachements: [] });
   }));
 
   it(`should allow to remove attachements`, () => {
@@ -247,13 +247,13 @@ describe('ContentComponent', () => {
     const originalPlatform = navigator.platform;
     function setNavigatorPlatfromTo(value) {
       Object.defineProperty(navigator, 'platform', {
-        get: function () { return value; }
+        get() { return value; }
       });
     }
 
     function resetPlatform() {
       Object.defineProperty(navigator, 'platform', {
-        get: function () { return originalPlatform; }
+        get() { return originalPlatform; }
       });
     }
   });

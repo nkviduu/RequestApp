@@ -13,7 +13,7 @@ describe('ContainerTextComponent', () => {
 
   beforeEach(async(() => {
     const contentServiceStub = {
-      updateItem: function(path, value) {}
+      updateItem(path, value) {}
     };
 
     TestBed.configureTestingModule({
@@ -63,14 +63,14 @@ describe('ContainerTextComponent', () => {
   function testDebounce() {
     const contentServiceSpy = spyOn(TestBed.get(ContentService), 'updateItem');
     const inputElement = fixture.debugElement.query(By.css('.js-content-input'));
-    const new_value = 'new value';
+    const newValue = 'new value';
 
-    inputElement.nativeElement.value = new_value;
+    inputElement.nativeElement.value = newValue;
     inputElement.nativeElement.dispatchEvent(new Event('input'));
 
     // component value should be changed and
     // due to debounce notify method should not be called yet
-    expect(component.value.text).toBe(new_value);
+    expect(component.value.text).toBe(newValue);
     expect(contentServiceSpy).not.toHaveBeenCalled();
     jasmine.clock().tick(299);
     expect(contentServiceSpy).not.toHaveBeenCalled();
