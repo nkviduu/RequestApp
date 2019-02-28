@@ -4,6 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {
   HDComponent,
+  OpenRequestsComponent,
+  OpenRequestItemComponent,
+  DebugContainerComponent
 } from '../components';
 
 import { UiComponentsModule } from '../ui-containers/ui.module';
@@ -16,7 +19,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     HDComponent,
-
+    OpenRequestsComponent,
+    OpenRequestItemComponent,
+    DebugContainerComponent,
   ],
   imports: [
     CommonModule,

@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-for-log": "ng build --prod --aot --build-optimizer --named-chunks --output-hashing=none && npm run log-size ",
+    "build-for-log": "ng build --prod --aot --build-optimizer --named-chunks --output-hashing=none && npm run log-size",
     "log-size": "node tools/getBundleSize.js dist/request-app tools/logs.json"
   },
   "private": true,

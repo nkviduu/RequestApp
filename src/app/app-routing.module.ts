@@ -4,12 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { TestComponent } from './components/test/test.component';
 
 const routes: Routes = [
+  { path: 'test', component: TestComponent },
+  { path: 'demo', loadChildren: './hd/hd.module#HdModule' },
   {
     path: 'about',
     loadChildren: './about/about.module#AboutModule',
   },
-  { path: 'demo', loadChildren: './hd/hd.module#HdModule' },
-  { path: 'test', component: TestComponent },
   { path: '**', redirectTo: '/about' },
 ];
 @NgModule({
