@@ -1,0 +1,60 @@
+<div class="baseContainer" [@fadeAnimation]="getRouterOutletState(o)">  
+  <div>
+    <h2 class="h2">Request App</h2>
+    <section>
+      <p>
+        Request App is an implementation of a data gathering interface that presents only relevant
+        and required options. Relevance is established based on previous responses.
+        Reducing number of available options lowers pereceived complexity of request completion.
+      </p>
+      <p>
+        This approach shares guidance aspects of wizzard interface pattern with
+        an addition of maintaining context of previously provided responses that are context switch out in wizzard
+        interface.
+      </p>
+      <p>
+        Request is summarized in hierarhical text format and used in email notifications
+      </p>
+
+      <p>
+        The demo app is based on help desk request entry scenario where depending on intial request
+        significantly different set of responses can be available or required.
+      </p>
+    </section>
+  </div>
+  <rf-up #up></rf-up>
+  <div class="subsection">
+    <ul class="section-links" (click)="up.scrollToSelf()" #submenu>
+        <li 
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true } ">
+        <a [routerLink]="['/about']">Video</a>
+      </li>
+      <li 
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true } ">
+        <a [routerLink]="['configuration']">Configuration</a>
+      </li>
+      
+      <li routerLinkActive="active-link">
+        <a [routerLink]="['state-management-service']">
+          State management
+        </a>
+      </li>
+
+      <li routerLinkActive="active-link">      
+        <a [routerLink]="['checkbox-container-component']">
+          Checkbox container
+        </a>
+      </li>      
+    
+      <li routerLinkActive="active-link">
+        <a [routerLink]="['date-time-slot-component']">
+          Date time slot component
+        </a>
+      </li>
+    </ul>
+    
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+</div>
