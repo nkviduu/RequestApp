@@ -20,7 +20,7 @@ export class ContainerTextComponent extends ContainerComponent
 
   @Input() placeholder = '';
 
-  @Input() validateWith: Function;
+  @Input() validateWith: (string) => string;
 
   value = {
     text: '',

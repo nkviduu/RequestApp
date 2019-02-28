@@ -3,10 +3,6 @@ import { DebugElement } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 05dada7... Add hd container and connect it with ui-containers, add shared module
 import { HDConfig } from '../../../config';
 import { IdService } from '../../services';
 import { ContentService } from '../../../services/content.service';

@@ -4,10 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { TestComponent } from './components/test/test.component';
 
 const routes: Routes = [
-  { path: 'test', component: TestComponent },
   { path: 'demo', loadChildren: './hd/hd.module#HdModule' },
+  { path: 'test', component: TestComponent },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
