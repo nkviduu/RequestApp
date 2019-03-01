@@ -2,19 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/primeng';
 
 import {
-  DropdownComponent,
+  ContainerComponent,
+  ContainerWrapperComponent,
   ContainerChbComponent,
   ContainerTextComponent,
-  ContainerTimeComponent,
   ContainerListComponent,
-  ContainerWrapperComponent,
-  ContainerComponent,
-  ContentComponent,
-  SubmitButtonComponent,
+  ContainerDtsComponent,
+  ContainerDtComponent,
+  ContainerTimeComponent,
   ContainerContentComponent,
-  FormActionsComponent
+  SubmitButtonComponent,
+  FormActionsComponent,
+  DatetimeslotComponent,
+  ContentComponent,
+  DropdownComponent,
 } from './components';
 
 import { IdService } from './services';
@@ -24,32 +28,34 @@ import { IdService } from './services';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CalendarModule,
   ],
   declarations: [
-    DropdownComponent,
     ContainerComponent, // included here only becouse of AOT compilations issue
+    ContainerWrapperComponent,
     ContainerChbComponent,
     ContainerTextComponent,
-    ContainerTimeComponent,
     ContainerListComponent,
-    ContainerWrapperComponent,
-    SubmitButtonComponent,
-    SubmitButtonComponent,
-    ContentComponent,
+    ContainerDtsComponent,
+    ContainerDtComponent,
+    ContainerTimeComponent,
     ContainerContentComponent,
     FormActionsComponent,
+    SubmitButtonComponent,
+    DatetimeslotComponent,
+    ContentComponent,
+    DropdownComponent,
   ],
   providers: [
     IdService,
   ],
   exports: [
-    DropdownComponent,
     ContainerChbComponent,
     ContainerTextComponent,
-    ContainerTimeComponent,
     ContainerListComponent,
-    ContainerWrapperComponent,
-    SubmitButtonComponent,
+    ContainerDtsComponent,
+    ContainerDtComponent,
+    ContainerTimeComponent,
     ContainerContentComponent,
     FormActionsComponent,
   ]

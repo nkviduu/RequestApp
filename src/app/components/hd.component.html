@@ -2,15 +2,18 @@
 
 <rf-open-requests></rf-open-requests>
 
+
 <div style='display: flex;'>
   <div id="request" class="request">
     <container-chb radioSelectChild>
-      <container-chb title="Conference room meeting setup" >
+      <container-chb title="Conference Room Meeting Setup" >
+        <container-dts title="Date and time:" required [step]="30"
+          ></container-dts>
 
         <container-list title="Room:" required
           list="24A|24B||25A|25B|25C|25D||Other"></container-list>
         
-        <container-text title="Project number:" required 
+        <container-text title="Project Number:" required 
           isshort
           [validateWith]="validateWith.projectNumber"></container-text>          
 
@@ -22,36 +25,37 @@
           ">
           <container-text title="Recurence pattern:" required
             subtitle="(Every Tuesday, first Wed of month)"></container-text>
+          <container-dt title="Recuring until:" required></container-dt>
         </container-chb>
         <container-chb required name="IT_OS">
           <container-chb title="IT request" name="IT"
-            subtitle="(GoToMeeting, Phone/Video conf. call, Projector, Laptop)">
+            subtitle="(GoToMeeting, Phone/Video Conf. Call, Projector, Laptop)">
         
             <container-chb required>
               <container-chb radioSelectChild >
-                <container-chb title="GoTo Meeting">
-                  <container-chb title="International callers">
+                <container-chb title="Go To Meeting">
+                  <container-chb title="International Callers">
                     <container-text placeholder="List countries" name="Countries">
                     </container-text>
                   </container-chb>
-                  <container-chb title="Voip" subtitle="(Toll free call over internet)"
+                  <container-chb title="Voip" subtitle="(Tall free call over internet)"
                     ></container-chb>
                 </container-chb>
                 
-                <container-chb title="Audio conference call" >
-                  <container-chb title="International callers">
+                <container-chb title="Audio Conference Call" >
+                  <container-chb title="International Callers">
                     <container-text placeholder="List countries">
                     </container-text>
                   </container-chb>
                 </container-chb>
 
                 <container-chb title="Skype"></container-chb>
-                <container-chb title="Video conference call"></container-chb>
+                <container-chb title="Video Conference call"></container-chb>
               </container-chb>
             
               <container-chb title="Laptop"></container-chb>
               <container-chb title="Projector">
-                <container-chb title="Laser pointer"></container-chb>
+                <container-chb title="Laser Pointer"></container-chb>
               </container-chb>
               
               <container-chb title="Additional IT setup info">
@@ -60,24 +64,24 @@
             </container-chb>
           </container-chb>
       
-          <container-chb title="Office services setup" name="OS"
+          <container-chb title="Office Services Setup" name="OS"
             subtitle="(Drink cart, catering, seating ..)">
             <container-text title="Total number of attendees" 
               isnumeric isshort iscentered
             ></container-text>
             
-            <container-chb title="Partner and / or client meeting" name="PartnerAndClientMeeting">
+            <container-chb title="Partner and / or Client meeting" name="PartnerAndClientMeeting">
               <container-text 
                 istextarea
                 title="Please specify which partner(s) will be in attendence:" name="PartnerAttendence"
               ></container-text>
             </container-chb>
             
-            <container-chb title="Drink cart">
-              <container-chb title="Still water"></container-chb>
-              <container-chb title="Sparkling water"></container-chb>
-              <container-chb title="Regular coffee"></container-chb>
-              <container-chb title="Decaf coffee"></container-chb>
+            <container-chb title="Drink Cart">
+              <container-chb title="Still Water"></container-chb>
+              <container-chb title="Sparkling Water"></container-chb>
+              <container-chb title="Regular Coffee"></container-chb>
+              <container-chb title="Decaf Coffee"></container-chb>
               <container-chb title="Tea"></container-chb>
               <container-chb title="Soda"></container-chb>
             </container-chb>
@@ -92,12 +96,16 @@
         <container-form-actions></container-form-actions>
       </container-chb>
     
-      <container-chb title="IT request">
+      <container-chb title="IT Request">
         <container-chb radioSelectChild>
-          <container-chb title="GoTo Meeting / Audio conference call"
+          <container-chb title="GoToMeeting / Audio Conference Call"
             subtitle="(for a meeting not in a conference room)"> 
-
-            <container-text title="Project number:" 
+            <container-dts title="Date and time:"
+              required
+              [step]="30"
+              name="dateandtime">
+            </container-dts>
+            <container-text title="Project Number:" 
               required isshort 
               [validateWith]="validateWith.projectNumber">
             </container-text>  
@@ -110,20 +118,21 @@
               <container-text title="Recurence pattern:" required
                 subtitle="(Every Tuesday, first Wed of month)"
               ></container-text>
+              <container-dt title="Recuring until:" required></container-dt>
             </container-chb>
   
             <container-chb required>
-              <container-chb title="GoTo Meeting">
-                <container-chb title="International callers">
+              <container-chb title="Go To Meeting">
+                <container-chb title="International Callers">
                   <container-text placeholder="List countries" 
                     name="Countries">
                   </container-text>
                 </container-chb>
-                <container-chb title="Voip" subtitle="(Toll free call over internet)"></container-chb>
+                <container-chb title="Voip" subtitle="(Tall free call over internet)"></container-chb>
               </container-chb>
   
-              <container-chb title="Audio conference call" >
-                <container-chb title="International callers">
+              <container-chb title="Audio Conference Call" >
+                <container-chb title="International Callers">
                   <container-text placeholder="List countries">
                   </container-text>
                 </container-chb>
@@ -133,16 +142,16 @@
             </container-chb>
           </container-chb>
   
-          <container-chb title="Loaner enquipment">
-            <container-text title="Project umber:" 
+          <container-chb title="Loaner Equipment">
+            <container-text title="Project Number:" 
               required isshort 
               [validateWith]="validateWith.projectNumber">
             </container-text> 
             <container-chb title="Projector">
-              <container-chb title="Laser pointer"></container-chb>
+              <container-chb title="Laser Pointer"></container-chb>
             </container-chb>
             <container-chb title="Laptop"></container-chb>
-            <container-chb title="Digital camera"></container-chb>
+            <container-chb title="Digital Camera"></container-chb>
             <container-chb title="Smartphone"></container-chb>
             <container-chb title="Other equipment or request information">
               <container-text istextarea></container-text>
@@ -167,4 +176,5 @@
   </div>
 
   <rf-debug-container></rf-debug-container>
+
 </div>
