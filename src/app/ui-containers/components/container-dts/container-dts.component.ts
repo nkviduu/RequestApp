@@ -10,11 +10,6 @@ const onlyProps = props => obj => {
     .split(',')
     .reduce((acc, key) => {
       acc[key] = obj[key];
-      if (!obj.hasOwnProperty(key)) {
-        acc.missingProps = acc.missingProps
-          ? acc.missingProps.concat(key)
-          : [key];
-      }
       return acc;
     }, Object.create(null));
 };
@@ -29,12 +24,13 @@ const dtsProps = onlyProps('date, fromtime, totime');
     useExisting: forwardRef(() => ContainerDtsComponent)
   }],
 })
-export class ContainerDtsComponent extends ContainerComponent
-                                   implements OnInit {
+export class ContainerDtsComponent
+  extends ContainerComponent implements OnInit {
   @Input() dateLabel = '';
   @Input() startLabel = ' starting: ';
   @Input() endLabel = ' ending: ';
 
+  // allow to override confg service settings for following props
   @Input() startTime;
   @Input() endTime;
   @Input() step;
@@ -44,39 +40,36 @@ export class ContainerDtsComponent extends ContainerComponent
     fromtime: null,
     totime: null,
     valid: false,
-    missingProps: null,
   };
 
   dateformat: string;
-  dateformatPrime: string;
   disabledDays = [];
   placeholder: string;
 
   ngOnInit() {
-    const { startTime, endTime, step } = this.config.timeDropdown;
+    const {
+      dateformat,
+      disabledDays,
+      timeDropdown: { startTime, endTime, step },
+    } = this.config;
+
     // use provided inputs or default to configuration set values
     this.startTime = this.startTime || startTime;
     this.endTime = this.endTime || endTime;
     this.step = this.step || step;
 
-    this.dateformat = this.config.dateformat || 'mm/dd/yyyy';
-    this.dateformatPrime = this.dateformat.replace(/yyyy/, 'yy');
-    this.disabledDays = this.config.disabledDays;
-    this.placeholder = this.dateformat.toUpperCase();
+    this.dateformat = dateformat || 'mm/dd/yyyy';
+    this.disabledDays = disabledDays;
+    this.placeholder = dateformat.toUpperCase();
   }
 
-  onchange(event) {
-    if (event.isInternalEvent) {
-      const value = dtsProps(event.value);
-      Object.assign(this.value, value);
-      this.notifyChange();
-    }
+  onchange(value) {
+    Object.assign(this.value, dtsProps(value));
+    this.notifyChange();
   }
 
   validateComponentValue() {
-    this.value.valid =
-      !!this.value.date &&
-      !!this.value.fromtime &&
-      !!this.value.totime;
+    const { date, fromtime, totime } = this.value;
+    this.value.valid = Boolean(date && fromtime && totime);
   }
 }

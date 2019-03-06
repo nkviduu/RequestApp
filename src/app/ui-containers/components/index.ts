@@ -12,3 +12,4 @@ export { ContentComponent } from './content/content.component';
 export * from './dropdown/dropdown.component';
 export * from './form-actions/form-actions.component';
 export * from './submit-button/submit-button.component';
+export * from './datepicker/datepicker.component';

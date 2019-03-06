@@ -8,7 +8,8 @@ export const TimeUtil = {
 
   timeToMin,
   minToTime,
-  duration
+  duration,
+  addTime,
 };
 
 const reTime = /^(\d|1\d+|2[0-4])( (?!=\d)|:|\.)([0-5]\d)? *(am|pm)*$/i;
@@ -92,4 +93,8 @@ function duration(min) {
   const minutesStr = minutes ? minutes + ' mins' : '';
 
   return (hoursStr + minutesStr).replace(/^ | $/, '');
+}
+
+function addTime(time: string, addition: string | number) {
+  return minToTime(timeToMin(time) + +addition);
 }

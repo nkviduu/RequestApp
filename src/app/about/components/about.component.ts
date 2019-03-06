@@ -14,6 +14,10 @@ import { fadeInAnimation, fadeAnimation } from '../../utils/animations';
 export class AboutComponent implements OnInit {
   @ViewChild('submenu') submenu: ElementRef;
 
+  // temp only
+  testDate = '';
+  dateChanged = (value) => console.log(`date changed to ${value}`);
+
   ngOnInit() { }
 
   getRouterOutletState(outlet: RouterOutlet) {

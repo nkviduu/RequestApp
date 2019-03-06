@@ -1,0 +1,12 @@
+<p-calendar 
+  [(ngModel)]="_date" 
+  (ngModelChange)="dateUpdate($event)"
+  [disabledDays]="disabledDays"
+  [showButtonBar]="true"
+  [dateFormat]="primengFormatting"
+  [placeholder]="placeholder"
+  inputStyleClass="datePickerInput"
+  class="datepicker"
+  #datepicker
+  ></p-calendar>  
+  

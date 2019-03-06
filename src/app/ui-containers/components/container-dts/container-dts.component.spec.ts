@@ -1,117 +1,110 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { MockComponent } from 'ng-mocks';
 
 import { ContainerDtsComponent } from './container-dts.component';
 import { DatetimeslotComponent } from '../datetimeslot/datetimeslot.component';
-import { DropdownComponent } from '../dropdown/dropdown.component';
+import { IDateTimeSlot } from '../datetimeslot/models';
 
-import { getContainerModuleConfig, getElementFactory } from '../Testing/moduleUtils';
+import { ContainerWrapperComponent } from '../container/container-wrapper.component';
+import { IdService } from '../../services';
+import { ContentService } from '../../../services';
 import { HDConfig } from '../../../config';
 
 describe('ContainerDtsComponent', () => {
   let component: ContainerDtsComponent;
   let fixture: ComponentFixture<ContainerDtsComponent>;
-  let el: any;
+  let datetimeslot: DatetimeslotComponent;
 
-  const moduleConfig = getContainerModuleConfig({
-    declarations: [
-      ContainerDtsComponent,
-      DatetimeslotComponent,
-      DropdownComponent,
-    ]
-  });
+  const dateformat = 'mm-dd-yyyy';
+  const disabledDays = [0, 6];
+  const startTime = '8:00 AM';
+  const endTime = '7:00 PM';
+  const step = 15;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule(moduleConfig)
+    TestBed.configureTestingModule({
+      declarations: [
+        ContainerDtsComponent,
+        ContainerWrapperComponent,
+        MockComponent(DatetimeslotComponent)
+      ],
+      providers: [
+        { provide: ContentService, useValue: { updateItem() {} } },
+        { provide: HDConfig,
+          useValue: {
+            dateformat,
+            disabledDays,
+            timeDropdown: { startTime, endTime, step }
+          },
+        },
+        IdService,
+      ]
+    })
     .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContainerDtsComponent);
     component = fixture.componentInstance;
-    el = getElementFactory(fixture);
     fixture.detectChanges();
+    datetimeslot = fixture.debugElement
+      .query(By.directive(DatetimeslotComponent))
+      .componentInstance as DatetimeslotComponent;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should respond to timeslot on change event, runs validation', () => {
-    const datetimeslot: DebugElement = el('.js-datetimeslot');
-    const date = '12/05/2017';
-    const fromtime = '10:00 AM';
-    const totime = '11:00 AM';
+  it(`should pass to datetimeslot config service params:
+    dateformat
+    disabledDays
+    fromtime
+    totime
+    step`,
+    () => {
+      expect(datetimeslot.dateFormat).toBe(dateformat);
+      expect(datetimeslot.disabledDays).toEqual(disabledDays);
+      expect(datetimeslot.startTime).toEqual(startTime);
+      expect(datetimeslot.endTime).toEqual(endTime);
+      expect(datetimeslot.step).toEqual(step);
+      expect(datetimeslot.placeholder).toBe(dateformat.toUpperCase());
+    }
+  );
 
-    datetimeslot.triggerEventHandler('change', {
-      isInternalEvent: true,
-      value: { date, fromtime, totime }
-    });
-    expect(component.value.date).toBe(date);
-    expect(component.value.fromtime).toBe(fromtime);
-    expect(component.value.totime).toBe(totime);
-    expect(component.isValid).toBeTruthy();
+  it('on datepicker date change event it should update component date ', () => {
+    const data: IDateTimeSlot = {
+      date: new Date('2018-03-03'),
+      fromtime: '9:30AM',
+      totime: '11:00AM',
+      valid: true,
+    };
 
-    // unset to time
-    datetimeslot.triggerEventHandler('change', {
-      isInternalEvent: true,
-      value: { date, fromtime, totime: '' }
-    });
-    expect(component.isValid).toBeFalsy();
-
-    datetimeslot.triggerEventHandler('change', {
-      isInternalEvent: true,
-      value: { }
-    });
-
-    expect(component.value.missingProps)
-      .toEqual(['date', 'fromtime', 'totime']);
+    datetimeslot.change.emit(data);
+    expect(component.value).toEqual(data);
   });
 
-  // this is handled by checking missing properties above rather than calling
-  // on change method directy here
-  // it('should throw if there is missing property in on change event object', async(() => {
-  //   const datetimeslot: DebugElement = el('.js-datetimeslot');
+  it('on datetimeslot change event it should validate date, fromtime, totime and update content service with new data', () => {
+    const data: IDateTimeSlot = {
+      date: new Date('2018-03-03'),
+      fromtime: '9:30AM',
+      totime: '11:00AM',
+      valid: true,
+    };
 
-  //   // to get to Throw error here needs to invoke component function directly
-  //   expect(() => {
-  //     component.onchange( {
-  //       isInternalEvent: true,
-  //       value: { }
-  //     })
-  //   }).toThrowError('Missing properties for datetimeslot control update date, fromtime, totime')
-  // }));
-});
+    const contentService = fixture.debugElement.injector.get(ContentService);
+    const path = 'testPath';
+    component.path = path;
 
-describe('ContainerDtsComponent dateformat without dateformat setting in HD config', () => {
-  let component: ContainerDtsComponent;
-  let fixture: ComponentFixture<ContainerDtsComponent>;
-  const hdConfig = new HDConfig();
-  // unset dateformat to test componet default dateformat
-  hdConfig.dateformat = undefined;
+    spyOn(contentService, 'updateItem');
+    const isValidSpy = spyOn(component, 'validateComponentValue').and.callThrough();
 
-  const moduleConfig = getContainerModuleConfig({
-    hdConfig,
-    declarations: [
-      ContainerDtsComponent,
-      DatetimeslotComponent,
-      DropdownComponent,
-    ]
+    datetimeslot.change.emit(data);
+
+    expect(isValidSpy).toHaveBeenCalled();
+    expect(contentService.updateItem)
+      .toHaveBeenCalledWith(path, data);
   });
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule(moduleConfig)
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ContainerDtsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should be mm/dd/yyyy', () => {
-    expect(component.dateformat).toBe('mm/dd/yyyy');
-  });
-
 });

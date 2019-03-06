@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { pick, set, cloneDeep } from 'lodash';
 
 import { Subject, BehaviorSubject } from 'rxjs';

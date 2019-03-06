@@ -1,33 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-
-import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarModule } from 'primeng/primeng';
-
-import { DropdownComponent } from '../dropdown/dropdown.component';
-import { DatetimeslotComponent } from './datetimeslot.component';
-
 import { take } from 'rxjs/operators';
+
+import { MockComponent } from 'ng-mocks';
+
+import { DatetimeslotComponent } from './datetimeslot.component';
+import { DatepickerComponent } from '../datepicker/datepicker.component';
+import { DropdownComponent } from '../dropdown/dropdown.component';
 
 describe('DatetimeslotComponent', () => {
   let component: DatetimeslotComponent;
   let fixture: ComponentFixture<DatetimeslotComponent>;
-  // let de: DebugElement;
-  // let el: HTMLElement;
-  let elFromClass: any;
+  let datepickerComponent: DatepickerComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        BrowserAnimationsModule,
-        CalendarModule
-      ],
       declarations: [
         DropdownComponent,
-        DatetimeslotComponent
+        DatetimeslotComponent,
+        MockComponent(DatepickerComponent),
       ],
     })
     .compileComponents();
@@ -36,232 +28,173 @@ describe('DatetimeslotComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DatetimeslotComponent);
     component = fixture.componentInstance;
+
+    component.startTime = '8:30 AM';
+    component.endTime = '6:30 PM';
+    component.step = 30;
+
     fixture.detectChanges();
 
-    elFromClass = className => fixture.debugElement.query(By.css(`.${className}`));
+    datepickerComponent = fixture.debugElement
+      .query(By.directive(DatepickerComponent))
+      .componentInstance as DatepickerComponent;
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  it ('should change date if passed date type value', () => {
-    const dateString = '01/01/2016';
-    const dateObj = new Date(dateString);
+  it ('should pass date, placeholder, dateFormat to internal date picker component', () => {
+    const date = new Date('2018-08-07');
+    const dateFormat = 'yyyy-mm-dd';
+    const placeholder = 'Enter date..';
 
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.date).toBe(dateString);
-        expect(component.currentSelection.date).toBe(dateString);
-        expect(e.isInternalEvent).toBeFalsy();
-      });
-    component.date = dateObj;
+    component.date = date;
+    component.dateFormat = dateFormat;
+    component.placeholder = placeholder;
     fixture.detectChanges();
+
+    expect(datepickerComponent.date).toEqual(date);
+    expect(datepickerComponent.dateFormat).toEqual(dateFormat);
+    expect(datepickerComponent.placeholder).toEqual(placeholder);
   });
 
-  it (`should change date if passed date string can be parsed,
-        and change to empty date string when date string cannot be parsed`, () => {
-    const dateString = '10/06/2017';
+  it ('should update date when datepicker changes and emit notification', () => {
+    const date = new Date('2018-08-03');
 
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.date).toBe(dateString);
-        expect(component.currentSelection.date).toBe(dateString);
-        expect(e.isInternalEvent).toBeFalsy();
-      });
-    component.date = dateString;
-    fixture.detectChanges();
+    const spy = jasmine.createSpy();
+    component.change.asObservable().pipe(take(1)).subscribe(spy);
 
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.date).toBe('');
-        expect(component.currentSelection.date).toBe('');
-        expect(e.isInternalEvent).toBeFalsy();
-      });
-    component.date = 'invalid date';
-    fixture.detectChanges();
+    datepickerComponent.dateChange.emit(date);
+    expect(component.date).toBe(date);
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0].date).toEqual(date);
   });
 
-  it ('should emit changed date event object on calendar changes', (done) => {
-    const dateString = '02/01/2016';
-    const dateObj = new Date(dateString);
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.date).toBe(dateString);
-        expect(component.currentSelection.date).toBe(dateString);
-        expect(e.isInternalEvent).toBeTruthy();
-        done();
-      });
-
-    elFromClass(component.calendarClassName)
-      .triggerEventHandler('ngModelChange', dateObj);
-    fixture.detectChanges();
-  });
-
-  it ('should change start, end time and step', () => {
+  it ('start, end time and step input values should be reflected in time dropdowns lists', () => {
     const startTime = '10:30 AM';
     const endTime = '11:30 AM';
-    const step = 30;
-    const expectedList = ['10:30 AM', '11:00 AM', '11:30 AM'];
+    const expectedFromList = ['10:30 AM', '11:00 AM'];
+    const expectedToList =               ['11:00 AM', '11:30 AM'];
 
     component.startTime = startTime;
     component.endTime = endTime;
-    component.step = step;
     fixture.detectChanges();
 
-    expect(component.dropdownLists[0]).toEqual(expectedList);
-    expect(component.dropdownLists[1]).toEqual(expectedList);
+    const [fromDropdown, toDropdown] = fixture.debugElement
+      .queryAll(By.directive(DropdownComponent))
+      .map(de => de.componentInstance as DropdownComponent);
+
+    expect(fromDropdown.list).toEqual(expectedFromList, 'fromTimeList');
+    expect(toDropdown.list).toEqual(expectedToList, 'fromTimeList');
   });
 
-  it (`should change from and to time,
-        changes in from time should be reflected in the totime list and totime value`, () => {
-    const startTime = '10:30 AM';
-    const endTime = '11:30 AM';
-    const step = 30;
-    const expectedList = ['10:30 AM', '11:00 AM', '11:30 AM'];
+  it ('to time list should start with the next time slot after selected from time', () => {
+    component.fromtime = '11:00 AM';
 
-    const totime = expectedList[1];
+    const [, toTimeList] = component.dropdownLists;
+    expect(toTimeList[0]).toBe('11:30 AM');
+  });
 
-    component.startTime = startTime;
+  it('if duration has been set replicated it if from time position is changed by adjusting totime', () => {
+    component.currentSelection.fromtime = '9:00 AM';
+    component.currentSelection.totime = '11:00 AM';
+
+    const spy = jasmine.createSpy();
+    component.change.asObservable().pipe(take(1)).subscribe(spy);
+    const [fromDropdown] = fixture.debugElement
+      .queryAll(By.directive(DropdownComponent));
+
+    fromDropdown.triggerEventHandler('selected', '9:30 AM');
+
+    fixture.detectChanges();
+    console.log(spy.calls.mostRecent().args);
+  });
+
+  it('should unset to field if from field is set to last item as this gives no time slot span', () => {
+    const endTime = '6:00 PM';
+    component.fromtime = '5:00 PM';
     component.endTime = endTime;
-    component.step = step;
+    component.totime = endTime;
+    expect(component.currentSelection.totime).toBe(endTime);
 
-    fixture.detectChanges();
+    const spy = jasmine.createSpy();
+    component.change.asObservable().pipe(take(1)).subscribe(spy);
+    const [fromDropdown] = fixture.debugElement
+      .queryAll(By.directive(DropdownComponent));
+    fromDropdown.triggerEventHandler('selected', endTime);
 
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.totime).toBe(expectedList[1]);
-        expect(component.currentSelection.totime).toBe(expectedList[1]);
-        expect(e.isInternalEvent).toBeFalsy();
-      });
-
-    component.totime = expectedList[1];
-    fixture.detectChanges();
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.fromtime).toBe(expectedList[1]);
-        expect(component.currentSelection.fromtime).toBe(expectedList[1]);
-
-        // to time should be moved by step to avoid 0 length selection
-        expect(e.value.totime).toBe(expectedList[2]);
-        expect(component.currentSelection.totime).toBe(expectedList[2]);
-
-        // once from time is selected to time list includes length and is reduced to
-        // list that contains time at the same or later time as fromtime
-        const expectedWideList = ['11:00 AM', '11:30 AM (30 mins)'];
-        expect(component.dropdownLists[1]).toEqual(expectedWideList);
-        expect(e.isInternalEvent).toBeFalsy();
-      });
-
-    component.fromtime = expectedList[1];
-    fixture.detectChanges();
+    expect(spy.calls.mostRecent().args[0].totime).toBe('');
   });
 
-  it ('should report valid value only all if date, fromtime and totime all are set', () => {
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.valid).toBeFalsy();
-        expect(component.currentSelection.valid).toBeFalsy();
-      });
+  it('should emit change event on from and to time change', () => {
+    const [fromDropdown, toDropdown] = fixture.debugElement
+    .queryAll(By.directive(DropdownComponent));
+    const fromTimeSpy = jasmine.createSpy();
 
-    component.date = '01/02/2016';
-    fixture.detectChanges();
+    const fromtime = '9:00 AM';
+    component.change.asObservable().pipe(take(1)).subscribe(fromTimeSpy);
+    fromDropdown.triggerEventHandler('selected', fromtime);
+    const fromUpdate = fromTimeSpy.calls.first();
 
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.valid).toBeFalsy();
-        expect(component.currentSelection.valid).toBeFalsy();
-      });
+    expect(fromUpdate).toBeTruthy('update exists');
+    expect(fromUpdate.args[0].fromtime).toBe(fromtime);
 
+    const totime = '11:00 AM';
+    const toTimeSpy = jasmine.createSpy();
+    component.change.asObservable().pipe(take(1)).subscribe(toTimeSpy);
+    toDropdown.triggerEventHandler('selected', totime);
+    const toUpdate = toTimeSpy.calls.first();
+
+    expect(toUpdate).toBeTruthy('update exists');
+    expect(toUpdate.args[0].totime).toBe(totime);
+  });
+
+  it('should not notify when update values are the same as current values', () => {
     component.fromtime = '9:00 AM';
-    fixture.detectChanges();
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe( e => {
-        expect(e.value.valid).toBeTruthy();
-        expect(component.currentSelection.valid).toBeTruthy();
-      });
-
     component.totime = '10:00 AM';
+
+    const updateSpy = jasmine.createSpy();
+    component.change.subscribe(updateSpy);
+    const [fromDropdown, toDropdown] = fixture.debugElement
+      .queryAll(By.directive(DropdownComponent));
+
+    fromDropdown.triggerEventHandler('selected', '9:00 AM');
+    toDropdown.triggerEventHandler('selected', '10:00 AM');
+
+    expect(updateSpy).not.toHaveBeenCalled();
+  });
+
+  it('should report valid value only all if date, fromtime and totime all are set', () => {
+    const [fromDropdown, toDropdown] = fixture.debugElement
+      .queryAll(By.directive(DropdownComponent));
+
+    const spy = jasmine.createSpy();
+    component.change.asObservable().subscribe(spy);
+
+    datepickerComponent.dateChange.emit(new Date(2017, 6, 5));
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0].valid).toBeFalsy('missing from and to fields');
+
+    spy.calls.reset();
+    fromDropdown.triggerEventHandler('selected', '9:00 AM');
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0].valid).toBeFalsy('missing to field');
+
+    spy.calls.reset();
+    toDropdown.triggerEventHandler('selected', '10:00 AM');
     fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0].valid).toBeTruthy('valid');
 
     // unset from time and valid should be false
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.valid).toBeFalsy();
-        expect(component.currentSelection.valid).toBeFalsy();
-      });
+    spy.calls.reset();
+    fromDropdown.triggerEventHandler('selected', '');
 
-    component.fromtime = '';
-    fixture.detectChanges();
-  });
-
-  it ('should unset to field if from field is set to last item as this gives no time slot span', () => {
-    const endTime = '6:00 PM';
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.totime).toBe(endTime);
-        expect(component.currentSelection.totime).toBe(endTime);
-      });
-
-    component.endTime = endTime;
-    component.step = 30;
-    component.totime = endTime;
-
-    fixture.detectChanges();
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.totime).toBe('');
-        expect(component.currentSelection.totime).toBe('');
-      });
-
-    component.fromtime = endTime;
-    fixture.detectChanges();
-
-  });
-
-  it ('should emit change events on internal time changes', () => {
-    const fromtime = '11:00 AM';
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.fromtime).toBe(fromtime);
-        expect(component.currentSelection.fromtime).toBe(fromtime);
-        expect(e.isInternalEvent).toBeTruthy();
-      });
-
-    elFromClass(component.fromTimeSlotClassName)
-      .triggerEventHandler('selected', fromtime);
-    fixture.detectChanges();
-
-    const totime = '11:30 AM';
-
-    component.change.asObservable()
-      .pipe(take(1))
-      .subscribe(e => {
-        expect(e.value.totime).toBe(totime);
-        expect(component.currentSelection.totime).toBe(totime);
-        expect(e.isInternalEvent).toBeTruthy();
-      });
-
-    elFromClass(component.toTimeSlotClassName)
-      .triggerEventHandler('selected', totime);
-    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.mostRecent().args[0].valid).toBeFalsy('missing from time');
   });
 });

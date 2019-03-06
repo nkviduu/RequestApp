@@ -17,6 +17,7 @@ import {
   SubmitButtonComponent,
   FormActionsComponent,
   DatetimeslotComponent,
+  DatepickerComponent,
   ContentComponent,
   DropdownComponent,
 } from './components';
@@ -45,6 +46,7 @@ import { IdService } from './services';
     DatetimeslotComponent,
     ContentComponent,
     DropdownComponent,
+    DatepickerComponent,
   ],
   providers: [
     IdService,
@@ -58,6 +60,8 @@ import { IdService } from './services';
     ContainerTimeComponent,
     ContainerContentComponent,
     FormActionsComponent,
+
+    DatepickerComponent, // temp only
   ]
 })
 export class UiComponentsModule { }

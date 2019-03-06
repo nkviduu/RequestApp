@@ -3,6 +3,8 @@ import { DebugElement } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
+import { CalendarModule } from 'primeng/primeng';
+
 import { HDConfig } from '../../../config';
 import { IdService } from '../../services';
 import { ContentService } from '../../../services/content.service';
@@ -22,6 +24,7 @@ export function getContainerModuleConfig({
     imports: [
       FormsModule,
       BrowserAnimationsModule,
+      CalendarModule,
     ].concat(imports),
     declarations: [ContainerWrapperComponent].concat(declarations),
     providers: [

@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { ContainerComponent } from '../container/container.component';
-import * as dateFormat from 'dateformat';
-import { IValue } from '../../models';
 
-import { FormControl, FormGroup } from '@angular/forms';
+import { ContainerComponent } from '../container/container.component';
+import { IValue } from '../../models';
 
 @Component({
   selector: 'container-dt',
@@ -21,21 +19,17 @@ export class ContainerDtComponent
     valid: false
   };
   dateformat: string;
-  dateformatPrime: string;
   disabledDays = [];
   placeholder: string;
 
   ngOnInit() {
     this.dateformat = this.config.dateformat || 'mm/dd/yyyy';
-    this.dateformatPrime = this.dateformat.replace(/yyyy/, 'yy');
     this.disabledDays = this.config.disabledDays;
     this.placeholder = this.dateformat.toUpperCase();
   }
 
   onchange(value) {
-    this.value.date = value
-      ? dateFormat(value, this.dateformat)
-      : '';
+    this.value.date = value;
     this.notifyChange();
   }
 

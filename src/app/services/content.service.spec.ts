@@ -75,7 +75,7 @@ describe('ContentService', () => {
     expect(contentService).toBeTruthy();
   });
 
-  it('#_addItems should add components data of IContainerData type to contentList', () => {
+  it('#_addItems should add components IContainerData interface date to contentList', () => {
     const item: IContainerData = {
       title: '',
       path: 'firstItem_path',
@@ -90,7 +90,7 @@ describe('ContentService', () => {
     ).toEqual(item.value);
   });
 
-  it('#updateItem should update item with path key to new value', () => {
+  it('#updateItem should update item identified with path to new value', () => {
     const item: IContainerData = {
       title: '',
       path: 'firstItem_path',
@@ -104,7 +104,7 @@ describe('ContentService', () => {
 
     expect(
       contentService.contentList.find(listItem => listItem.path === item.path).value
-    ).toEqual({ ...newValue, valid: false });
+    ).toEqual(newValue);
   });
 
   it ('#missingRequired$ stream should provide missing items stream with #getMissingRequired providing detail error message', () => {
@@ -114,7 +114,7 @@ describe('ContentService', () => {
         title: 'First item:',
         path: 'firstItem_path',
         value: { text: '', valid: false },
-        el: el
+        el,
       },
       {
         title: 'Second Item',
@@ -123,7 +123,7 @@ describe('ContentService', () => {
           isrequired: true,
           valid: false
         },
-        el: el
+        el,
       }];
     contentService._addItems(items);
 
@@ -521,7 +521,7 @@ describe('ContentService remote service', () => {
             contentService.restoreRequest(request.id)
               .then(() => request.id)
           )
-          .then((request_id) => contentService.deleteRequest(request_id))
+          .then((requestId) => contentService.deleteRequest(requestId))
           .then(() => expect(resetSpy).toHaveBeenCalled());
     });
   });
@@ -533,7 +533,7 @@ function getSampleContent(el = { applyNewValue(value) {} }) {
       title: 'First item',
       path: 'firstItem_path',
       value: { text: '', valid: false },
-      el: el
+      el,
     },
     {
       title: 'Second Item',
@@ -542,7 +542,7 @@ function getSampleContent(el = { applyNewValue(value) {} }) {
         isrequired: true,
         valid: false
       },
-      el: el
+      el,
     } ];
 }
 

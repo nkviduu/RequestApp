@@ -11,11 +11,9 @@ import {
 import * as dateFormat from 'dateformat';
 
 import { TimeUtil } from '../../../utils/time-util';
-import { IDateTimeSlot, IDateTimeSlotEvent } from './models';
+import { IDateTimeSlot } from './models';
 
-const { buildListFromTo, minToTime, timeToMin} = TimeUtil;
-
-const dateFormatMask = 'mm/dd/yyyy';
+const { buildListFromTo, minToTime, timeToMin, addTime } = TimeUtil;
 
 @Component({
   // tslint:disable-next-line
@@ -32,26 +30,19 @@ export class DatetimeslotComponent implements OnInit {
   @Input() startLabel = ' starting: ';
   @Input() endLabel = ' ending: ';
 
-  @Input() set date(value: string | Date) { this.setDate(value, false); }
+  @Input() date: string | Date = null;
+  @Input() dateFormat = 'mm/dd/yy';
+  @Input() disabledDays = [0, 6];
+  @Input() placeholder = 'Enter date..';
 
-  @Input() set fromtime(value: string) { this.setTime(this.FROM_TIME, value, false); }
-  @Input() set totime(value: string) { this.setTime(this.TO_TIME, value, false); }
+  @Input() set fromtime(value: string) { this.setFromTime(value, false); }
+  @Input() set totime(value: string) { this.setToTime(value, false); }
 
   @Input() startTime = '8:00 AM';
   @Input() endTime = '7:00 PM';
   @Input() step = 10;
 
-  @Input() dateFormat = 'mm/dd/yy';
-  @Input() disabledDays = [0, 6];
-  @Input() placeholder: string;
-
-  @Output() change = new EventEmitter<IDateTimeSlotEvent>();
-
-  calendarClassName = 'datetimeslot__calendar';
-  fromTimeSlotClassName = 'datetimeslot__from';
-  toTimeSlotClassName = 'datetimeslot__to';
-
-  _date: Date = null;
+  @Output() change = new EventEmitter<IDateTimeSlot>();
 
   currentSelection: IDateTimeSlot = {
     date: null,
@@ -61,67 +52,86 @@ export class DatetimeslotComponent implements OnInit {
   };
 
   get dropdownLists() {
+    const { startTime, endTime, step, currentSelection: { fromtime } } = this;
+
     return [
-      buildListFromTo(this.startTime, this.endTime, +this.step, false, false),
       buildListFromTo(
-        this.currentSelection.fromtime || this.startTime,
-        this.endTime,
-        +this.step,
+        startTime,
+        addTime(endTime, -step),
+        +step,
         false,
-        !!this.currentSelection.fromtime)
+        false),
+      buildListFromTo(
+        addTime(fromtime || startTime, step),
+        endTime,
+        +step,
+        false,
+        !!fromtime)
     ];
   }
 
-  // @ViewChild('datepicker') datepicker;
   ngOnInit() {
   }
 
-  setDate(value: string | Date, isInternalEvent = true) {
-    if (value instanceof Date) {
-      this._date = value;
-      this.currentSelection.date = dateFormat(value, dateFormatMask);
-    } else {
-      if (!isNaN(Date.parse(value))) {
-        this._date = new Date(value as string);
-        this.currentSelection.date = value;
-      } else {
-        this._date = null;
-        this.currentSelection.date = '';
-      }
+  changeDate(value: Date) {
+    const { date } = this;
+    if (date && (date.toString() === value.toString())) {
+      return;
     }
-    this.notify(isInternalEvent);
+    this.date = value;
+    this.notify();
   }
 
-  setTime(which, value, isInternal = true) {
-    this.currentSelection[which] = value;
-    if (which === this.FROM_TIME) {
-      const fromMin = timeToMin(this.currentSelection.fromtime);
-      const toMin = timeToMin(this.currentSelection.totime);
-
-      if (fromMin >= toMin - this.step) {
-        const newToTimeMin = fromMin + this.step;
-        const newToTime = (newToTimeMin <= timeToMin(this.endTime))
-          ? minToTime(newToTimeMin)
-          : '';
-
-        this.currentSelection.totime = newToTime;
-      }
+  setToTime(value, isInternal = true) {
+    const { currentSelection } = this;
+    if (currentSelection.totime === value) {
+      return;
     }
-    this.notify(isInternal);
+    currentSelection.totime = value;
+    if (isInternal) {
+      this.notify();
+    }
   }
 
-  notify(isInternalEvent) {
+  setFromTime(value, isInternal = true) {
+    const { endTime, step, currentSelection: { fromtime, totime } } = this;
+    if (fromtime === value) {
+      return;
+    }
+
+    const currentDiff = diffInSteps(fromtime, totime);
+    this.currentSelection.fromtime = value;
+    // from time change may change to end time
+    const fromMin = timeToMin(value);
+    const toMin = timeToMin(totime);
+
+    if (fromMin >= (toMin - (currentDiff))) {
+      const newToTimeMin = fromMin + (currentDiff);
+      const newToTime = (newToTimeMin <= timeToMin(endTime))
+        ? minToTime(newToTimeMin)
+        : '';
+
+      this.currentSelection.totime = newToTime;
+    }
+    if (isInternal) {
+      this.notify();
+    }
+
+    function diffInSteps(from, to) {
+      return from && to
+        ? (timeToMin(to) - timeToMin(from))
+        : 0;
+    }
+  }
+
+  notify() {
     this.validate();
-    const value = Object.assign({}, this.currentSelection);
-    this.change.emit({ value, isInternalEvent });
+    const { date, currentSelection: { fromtime, totime, valid } } = this;
+    this.change.emit({ date, fromtime, totime, valid });
   }
 
   validate() {
-    this.currentSelection.valid =
-      (!!this.currentSelection.date &&
-      !!this.currentSelection.fromtime &&
-      !!this.currentSelection.totime) as boolean;
+    const { date, currentSelection: { fromtime, totime } } = this;
+    this.currentSelection.valid = Boolean(date && fromtime && totime);
   }
-
-  get primeDateFormat() { return this.dateFormat.replace(/yyyy/, 'yy'); }
- }
+}

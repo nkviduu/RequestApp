@@ -2,31 +2,30 @@
   <span class="datetimeslot__label">
   {{ dateLabel }}
   </span>
-    <p-calendar #pcalendar [class]="calendarClassName"
-      [(ngModel)]="_date" 
-      (ngModelChange)="setDate($event)"
-      showButtonBar="false"
-      [disabledDays]="disabledDays"
-      [dateFormat]="primeDateFormat"
-      [placeholder]="placeholder"
-      #datepicker
-      ></p-calendar>
+  <rf-datepicker
+    [date]="date"
+    (dateChange)="changeDate($event)"
+    [disabledDays]="disabledDays"
+    [dateFormat]="dateFormat"
+    [placeholder]="placeholder"
+    #datepicker></rf-datepicker>
+  
   <span class="datetimeslot__label">
   {{ startLabel }}
   </span>
-    <vt-dropdown [class]="fromTimeSlotClassName"
-    [list]="dropdownLists[0]"
-    [select]="currentSelection.fromtime"
-    (selected)="setTime(FROM_TIME, $event)"
-    [placeholderLabel]="startLabel"
-    ></vt-dropdown>
+    <vt-dropdown
+      [list]="dropdownLists[0]"
+      [select]="currentSelection.fromtime"
+      (selected)="setFromTime($event)"
+      [placeholderLabel]="startLabel"></vt-dropdown>
+
   <span class="datetimeslot__label" [attr.data-label]="endLabel">
   {{ endLabel }}
   </span>
-    <vt-dropdown [class]="toTimeSlotClassName"
+    <vt-dropdown
       [list]="dropdownLists[1]" 
       [select]="currentSelection.totime"
-      (selected)="setTime(TO_TIME, $event)"
+      (selected)="setToTime($event)"
       [placeholderLabel]="endLabel"
       isWide="true" ></vt-dropdown>
-  </div>
+</div>
