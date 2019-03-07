@@ -15,10 +15,25 @@
     .weekdaytitle,
     .daycell {
       background-color: #FAFAFA;
+      position: relative;
     }
 
     .daycell.currmonth {
       background-color: transparent;
+    }
+
+    .markcurrday {
+      text-decoration: none;
+
+    }
+    span.markcurrday:after {
+      content: '';
+      background: #0085ff;
+      position: absolute;
+      left: 3px;
+      top: 2px;
+      width: 4px;
+      height: 4px;
     }
 
     .icon-ngxmydpright:before,

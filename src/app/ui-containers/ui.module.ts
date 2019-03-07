@@ -60,8 +60,7 @@ import { IdService } from './services';
     ContainerTimeComponent,
     ContainerContentComponent,
     FormActionsComponent,
-
-    DatepickerComponent, // temp only
+    DatetimeslotComponent,
   ]
 })
 export class UiComponentsModule { }

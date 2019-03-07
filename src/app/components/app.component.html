@@ -1,18 +1,24 @@
 <div class='app-main-wrapper'>
   <div rfTabNavigation class="app-main">
+    <div class="app-title">Request App</div>
     <nav>
-        <a 
-        routerLink="about" 
-        routerLinkActive="link--active"
-        preserveFragment
-        >About</a>
-        <div class='separator'></div>
-        <a 
+      <a 
         routerLink="demo" 
         routerLinkActive="link--active"
         [routerLinkActiveOptions]="{ exact: true }"
         preserveFragment
-        >Demo</a>    
+        >Demo</a> 
+      <div class='separator'></div>
+      <a 
+        routerLink="about" 
+        routerLinkActive="link--active"
+        preserveFragment
+        >About</a>   
+      <div class='separator'></div>
+      <a 
+        href="https://github.com/nkviduu/RequestApp"
+        target="github-link"
+        >Github</a>  
     </nav>
 
     <div 

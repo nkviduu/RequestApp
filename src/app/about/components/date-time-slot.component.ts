@@ -18,22 +18,22 @@ import { Component } from '@angular/core';
       content='
       <vt-datetimeslot
         date="10/12/2018"
+        dateFormat="mm/dd/yyyy"
         startTime="8:00 AM"
         endTime="6:30 PM"
         fromtime="9:00 AM"
         totime="4:00 PM">
       </vt-datetimeslot>
       '>
-      <!--
       <vt-datetimeslot
         date="10/12/2018"
+        dateFormat="mm/dd/yyyy"
         startTime="8:00 AM"
         endTime="6:30 PM"
         step="15"
         fromtime="9:00 AM"
         totime="4:00 PM"
       ></vt-datetimeslot>
-      -->
     </rf-format-code>
   </div>
 `})

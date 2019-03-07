@@ -39,8 +39,6 @@ const routes: Routes = [
   imports: [
     CommonModule,
     UiComponentsModule,
-    // FormsModule,
-    // ReactiveFormsModule,
     RouterModule.forChild(routes),
   ]
 })
