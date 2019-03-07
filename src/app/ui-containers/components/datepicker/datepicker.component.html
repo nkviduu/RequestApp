@@ -1,12 +1,21 @@
-<p-calendar 
-  [(ngModel)]="_date" 
-  (ngModelChange)="dateUpdate($event)"
-  [disabledDays]="disabledDays"
-  [showButtonBar]="true"
-  [dateFormat]="primengFormatting"
-  [placeholder]="placeholder"
-  inputStyleClass="datePickerInput"
-  class="datepicker"
-  #datepicker
-  ></p-calendar>  
+<div class="datepicker-container">
+  <input 
+    ngx-mydatepicker 
+    [(ngModel)]="model" 
+    (dateChanged)="onDateChanged($event)"
+    [placeholder]="placeholder" 
+    [options]="options" 
+    type="text"
+    class="datepicker" 
+    style="float:none" 
+    name="mydate"
+    #dp="ngx-mydatepicker">
+
+  <button 
+    type="button" 
+    class="datepicker-open-calendar" 
+    (click)="dp.toggleCalendar()"
+    ><span>open calendar</span></button>
+</div>
+
   

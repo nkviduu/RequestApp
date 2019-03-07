@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { FormsModule } from '@angular/forms';
-import { CalendarModule, Calendar } from 'primeng/primeng';
 import { take } from 'rxjs/operators';
 
 import { DatepickerComponent } from './datepicker.component';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
 describe('DatepickerComponent', () => {
   let component: DatepickerComponent;
@@ -14,7 +14,10 @@ describe('DatepickerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DatepickerComponent],
-      imports: [CalendarModule, FormsModule],
+      imports: [
+        FormsModule,
+        NgxMyDatePickerModule.forRoot(),
+      ],
     })
     .compileComponents();
   }));
@@ -65,7 +68,8 @@ describe('DatepickerComponent', () => {
     });
 
     input.nativeElement.value = 'Jan 1, 2018';
-    input.nativeElement.dispatchEvent(new Event('keydown'));
     input.nativeElement.dispatchEvent(new Event('input'));
+    input.nativeElement.dispatchEvent(new Event('keydown'));
+    input.nativeElement.dispatchEvent(new Event('keyup'));
   });
 });

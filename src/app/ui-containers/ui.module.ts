@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/primeng';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
 import {
   ContainerComponent,
@@ -29,7 +29,7 @@ import { IdService } from './services';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CalendarModule,
+    NgxMyDatePickerModule.forRoot(),
   ],
   declarations: [
     ContainerComponent, // included here only becouse of AOT compilations issue

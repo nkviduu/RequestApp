@@ -1,3 +1,81 @@
-@import "~primeng/resources/themes/omega/theme.css";
-@import "~primeicons/primeicons.css";
-@import "~primeng/resources/primeng.min.css";
+.datepicker-container {
+  position: relative;
+  display: inline-block;
+
+  > input {
+    width: 76px;
+  }
+
+  ngx-my-date-picker {
+    position: absolute;
+    left: 0;
+  }
+
+  .ngxmdp {
+    .weekdaytitle,
+    .daycell {
+      background-color: #FAFAFA;
+    }
+
+    .daycell.currmonth {
+      background-color: transparent;
+    }
+
+    .icon-ngxmydpright:before,
+    .icon-ngxmydpleft:before {
+      content: '▶';
+      font-size: .7rem;
+      line-height: 1.4;
+      vertical-align: middle;
+      display: inline-block;
+      color: #555;
+    }
+  
+    .icon-ngxmydpleft:before {
+      content: "◀";
+    }
+
+    .disabled {
+      background-color: #fafafa !important;
+    }
+
+    table:first-child.header {
+      padding: 4px 12px;
+    }
+
+    *:focus {
+      border-bottom: solid 2px #222;
+    }
+
+  }
+}
+
+
+
+.datepicker-open-calendar {
+  border: none;
+  background: transparent;
+  position: relative;
+  width: 1.2rem;
+  height: 1rem;
+
+  span {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  &:after {
+    content: "📅";
+    content: "";
+    position: absolute;
+    background-image: url(/assets/images/icon_calendar.png);
+    background-position: center;
+    background-size: contain;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
