@@ -3,7 +3,6 @@
 /temp
 /deployment_scripts
 /tools
-
 # compiled output
 /dist
 /tmp

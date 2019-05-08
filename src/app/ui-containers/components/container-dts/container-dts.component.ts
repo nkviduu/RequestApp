@@ -64,6 +64,9 @@ export class ContainerDtsComponent
   }
 
   onchange(value) {
+    if (value.type) {
+      return;
+    }
     Object.assign(this.value, dtsProps(value));
     this.notifyChange();
   }

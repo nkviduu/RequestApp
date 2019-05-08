@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() =>
-      this.renderer.addClass(this.document.body, 'app-loaded'),  0);
+      this.renderer.addClass(this.document.body, 'app-loaded'),  500);
   }
 
    getState(outlet: RouterOutlet) {

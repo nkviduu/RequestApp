@@ -91,7 +91,7 @@ function dateToModel(date: Date) {
 }
 
 function modelToDate(model: IMyDateModel) {
-  if (!model) {
+  if (!model || !model.date.year) {
     return null;
   }
   const { year, month, day } = model.date;

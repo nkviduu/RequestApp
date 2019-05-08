@@ -8,6 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "e2e-noServe": "ng e2e --webdriver-update=false --devServerTarget=''",
+    "e2e-watch": "concurrently --kill-others \"npm start\" \"npm run e2e-watch-no-serve\"",
+    "e2e-watch2": "npm start && npm run e2e-watch-no-serve",
+    "e2e-watch-no-serve": "watch \"npm run e2e -- --dev-server-target \" src e2e --wait=1",
     "build-for-log": "ng build --prod --aot --build-optimizer --named-chunks --output-hashing=none && npm run log-size",
     "log-size": "node tools/getBundleSize.js dist/request-app tools/logs.json",
     "publish": "./deployment_scripts/publish.sh"
