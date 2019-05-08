@@ -1,27 +1,37 @@
-# RequestApp
+## Request Generator 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.3.
+A better interface to complex request forms. It allows user to concentrate only on available and required choices relevant to the responses entered.  Providing only relevant options is aiding in reducing complexity significantly.  
 
-## Development server
+It takes an advantage of conversational approach of  wizzard interface pattern without limitation of loss of content entered and context and ability of non-sequential content completion.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+At the end of request text summary of request is generated that can be used in text based content correspondence such as email.
 
-## Code scaffolding
+[View application demo](http://request-app.nkviduu.tech/demo)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+----
 
-## Build
+![Alt Demo screen capture](read_me_images/request-app-screencapture.gif) 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+### Additional features
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Once an item is selected it reveals choices and requirements available for it.  Required selections are marked with red line.
 
-## Running end-to-end tests
+![Alt Item selected](read_me_images/ITRequest.png) 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
+The list allows to define subselections where selecting an item would hide other no longer
+applicable selections leaving relevant selections visible.  
+I the example above 
+* GoTo Meeting, 
+* Audio Conference Call,
+* Skype,
+* Video Conference Call
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+are mutually exlusive, so when one is selected remaining choices are hidden
+
+![Alt Item selected](read_me_images/ITRequest_GoToMeetingSelected.png) 
+
+Implementation - Angular 7. 
+
+[Implementation detail](http://request-app.nkviduu.tech/about)
